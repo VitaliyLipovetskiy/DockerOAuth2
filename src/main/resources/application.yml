@@ -1,0 +1,31 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/app_oauth}
+    username: ${JDBC_DATABASE_USERNAME:postgres}
+    password: ${JDBC_DATABASE_PASSWORD:password}
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+jwt:
+  secret: "EDnMK2HygoFsrq60bjie7wiDfcgxsVj68Kv2bO84DEFgIkuGpBwOagavlfsy9k83LAQQZIdZWjdVFgY2APDK9ULcYasUUmTQmzFn"
+
+oauth2:
+  front:
+    client_id: "kotopes-front-app-1"
+    client_secret: "TMJJTduu1d1pvT5E42IIyrJpjpV6SL84L3I1lcWD"
+
+springdoc:
+  api-docs:
+    path: /api-docs
