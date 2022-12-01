@@ -13,13 +13,13 @@ import static com.example.dockeroauth20.config.SecurityConstants.USER_ROLE_NAME;
 @Component
 @RequiredArgsConstructor
 public class InitialLoader implements CommandLineRunner {
-    @Value("${oauth2.front.client_id:kotopes-front-app-1}")
+    @Value("${oauth2.front.client_id}")
     private String clientId;
-    @Value("${oauth2.front.client_secret:password}")
+    @Value("${oauth2.front.client_secret}")
     private String clientSecret;
-    @Value("${oauth2.access_token_validity:86400}")
+    @Value("${oauth2.access_token_validity}")
     private int accessTokenValidity;
-    @Value("${oauth2.refresh_token_validity:604800}")
+    @Value("${oauth2.refresh_token_validity}")
     private int refreshTokenValidity;
 
     private final RoleService roleService;

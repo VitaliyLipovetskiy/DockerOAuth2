@@ -1,0 +1,45 @@
+version: '3.9'
+
+volumes:
+  postgres_data:
+
+services:
+  storage:
+    image: 'postgres:13.7'
+    container_name: storage
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '7432:5432'
+    healthcheck:
+      test: [ 'CMD-SHELL', 'su postgres', '&&', 'pg_isready' ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_PASSWORD: password
+
+  app:
+    build:
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - '8080:8080'
+    depends_on:
+      storage:
+        condition: service_healthy
+    environment:
+#     Change
+      - JDBC_DATABASE_URL=jdbc:postgresql://storage:5432/db
+      - JDBC_DATABASE_USERNAME=username
+      - JDBC_DATABASE_PASSWORD=password
+      - JWT_SECRET="SECRET"
+      - OAUTH2_CLIENT_ID="client-id"
+      - OAUTH2_CLIENT_SECRET="CLIENT_SECRET"
+      - OAUTH2_ACCESS_VALIDITY=86400
+      - OAUTH2_REFRESH_VALIDITY=604800
+      - PORT=8080
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'

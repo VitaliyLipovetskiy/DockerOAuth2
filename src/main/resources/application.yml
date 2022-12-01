@@ -1,11 +1,11 @@
 server:
-  port: ${PORT:8080}
+  port: ${PORT}
 
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/app_oauth}
-    username: ${JDBC_DATABASE_USERNAME:postgres}
-    password: ${JDBC_DATABASE_PASSWORD:password}
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
 
   mvc:
     throw-exception-if-no-handler-found: true
@@ -19,12 +19,14 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 jwt:
-  secret: "EDnMK2HygoFsrq60bjie7wiDfcgxsVj68Kv2bO84DEFgIkuGpBwOagavlfsy9k83LAQQZIdZWjdVFgY2APDK9ULcYasUUmTQmzFn"
+  secret: ${JWT_SECRET}
 
 oauth2:
   front:
-    client_id: "kotopes-front-app-1"
-    client_secret: "TMJJTduu1d1pvT5E42IIyrJpjpV6SL84L3I1lcWD"
+    client_id: ${OAUTH2_CLIENT_ID}
+    client_secret: ${OAUTH2_CLIENT_SECRET}
+  access_token_validity: ${OAUTH2_ACCESS_VALIDITY}
+  refresh_token_validity: ${OAUTH2_REFRESH_VALIDITY}
 
 springdoc:
   api-docs:

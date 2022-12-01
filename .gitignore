@@ -4,4 +4,5 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .idea
+docker-compose.yml
 
