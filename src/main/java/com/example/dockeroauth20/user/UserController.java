@@ -1,7 +1,6 @@
 package com.example.dockeroauth20.user;
 
 import com.example.dockeroauth20.user.dto.*;
-import com.example.dockeroauth20.validation.ValidationErrorBuilder;
 import com.example.dockeroauth20.validation.exceptions.ApplicationException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,13 +44,8 @@ public class UserController {
     @Validated
     public ResponseEntity<?> registerUser(
             HttpServletRequest request,
-            @RequestBody @Valid LoginRequest loginRequest,
-            Errors errors) {
+            @RequestBody @Valid LoginRequest loginRequest) {
         log.info("register {}", loginRequest);
-        if (errors.hasErrors()) {
-            log.info("Validation error with request: " + request.getRequestURI());
-            return ResponseEntity.unprocessableEntity().body(ValidationErrorBuilder.fromBindingErrors(errors));
-        }
         User signup = userService.signup(loginRequest);
         UserDto userDto = convertToDto(signup);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
@@ -81,7 +74,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully verified",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TokenDto.class)) }),
+                            schema = @Schema(implementation = UserDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Verification code not found",
                     content = @Content)})
     @PutMapping(value = "/verify")
@@ -94,7 +87,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully changed",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ChangePasswordDto.class)) }),
+                            schema = @Schema(implementation = UserDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Verification code not found",
                     content = @Content),
             @ApiResponse(responseCode = "400", description = "Validation error",
@@ -109,7 +102,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully changed",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ForgotPasswordDto.class)) }),
+                            schema = @Schema(implementation = UserDto.class)) }),
             @ApiResponse(responseCode = "404", description = "User with specified email not found",
                     content = @Content),
             @ApiResponse(responseCode = "400", description = "Validation error",
